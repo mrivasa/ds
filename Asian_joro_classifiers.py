@@ -73,7 +73,7 @@ for obs_name, file_name in test_data.items():
         X_test = X_test[['MeanDiurnalRange', 'Isothermality', 'TempAnnRange','MeanTempWetQtr', 'AnnPercip', 'PrecipWetQtr', 'PrecipWrmQtr']]
         print(classifier(f"{model_name} w/importance", mp['model'], X_train, X_test, Y_train, Y_test))
 
-"""
+
 
 ## Taken from: https://machinelearningmastery.com/save-load-machine-learning-models-python-scikit-learn/
 # Save the model
@@ -83,6 +83,22 @@ print(classifier('decision tree', tree.DecisionTreeClassifier(), X_train, X_test
 loaded_model = pickle.load(open("decision_tree_model.sav", 'rb'))
 result = loaded_model.score(X_test, Y_test)
 print(result)
+
+"""
+
+X_train, X_test, Y_train, Y_test = loadData('combined_joro_v2.csv')
+clf = tree.DecisionTreeClassifier()
+clf.fit(X_train, Y_train)
+Predict = (clf.predict(X_test))
+target_names = ['class 0', 'class 1']
+confusion_matrix(Y_test, Predict)
+print(classification_report(Y_test, Predict, target_names = target_names))
+
+import numpy as np
+from sklearn import metrics
+
+fpr, tpr, thresholds = metrics.roc_curve(Y_test, Predict)
+print("AUC: {}".format(metrics.auc(fpr, tpr)))
 
 
 """
